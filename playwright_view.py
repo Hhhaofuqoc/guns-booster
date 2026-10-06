@@ -60,6 +60,12 @@ def main():
                 ctx.route("**/*.{mp4,webm,mp3,wav,ogg,woff,woff2}", lambda r: r.abort())
                 pg = ctx.new_page()
                 pg.goto(f"https://guns.lol/{USER}?v={n:x}", wait_until="domcontentloaded", timeout=45000)
+                # splash "click to enter": clica no centro (se a view só conta após o clique, aqui garante)
+                try:
+                    pg.mouse.click(683, 384)
+                    pg.wait_for_timeout(1500)
+                except Exception:
+                    pass
                 pg.wait_for_timeout(9000 + random.randint(0, 5000))  # deixa Turnstile+PoW+analytics rodarem
                 # scroll/click humano bobo
                 try:
