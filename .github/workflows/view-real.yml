@@ -1,0 +1,33 @@
+name: view-real
+on:
+  workflow_dispatch:
+    inputs:
+      user:
+        description: "guns.lol user (ex: aveny)"
+        required: true
+        default: "aveny"
+      minutes:
+        description: "duracao em minutos (max ~350)"
+        required: true
+        default: "30"
+      conc:
+        description: "navegadores em paralelo (2-4)"
+        required: true
+        default: "3"
+jobs:
+  real:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q playwright requests
+      - run: python -m playwright install chromium --with-deps
+      - run: python3 playwright_view.py
+        env:
+          GUNS_USER: ${{ inputs.user }}
+          GUNS_MINUTES: ${{ inputs.minutes }}
+          GUNS_CONC: ${{ inputs.conc }}
+          PROXY_LIST: ${{ secrets.PROXY_LIST }}
