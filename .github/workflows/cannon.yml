@@ -1,0 +1,32 @@
+name: view-cannon
+on:
+  workflow_dispatch:
+    inputs:
+      user:
+        description: "guns.lol user (ex: koppy)"
+        required: true
+        default: "koppy"
+      rps:
+        description: "views por segundo"
+        required: true
+        default: "5"
+      minutes:
+        description: "duracao em minutos (max ~350)"
+        required: true
+        default: "60"
+jobs:
+  cannon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - run: python3 cannon.py
+        env:
+          GUNS_USER: ${{ inputs.user }}
+          GUNS_RPS: ${{ inputs.rps }}
+          GUNS_MINUTES: ${{ inputs.minutes }}
+          PROXY_LIST: ${{ secrets.PROXY_LIST }}
